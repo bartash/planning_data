@@ -1,6 +1,6 @@
-OUT=$1
-SQL=$2
-TMP=$3
+OUT=$1.out
+SQL=$1.sql
+TMP=$1.raw
 impala-shell.sh  -B < $SQL -o $TMP
 echo "Address,City" > $OUT
 cat $TMP | tr -d \" | cut -c 6- | cut -c -27 | sort -u |\
