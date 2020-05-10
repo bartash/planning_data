@@ -65,7 +65,55 @@ select max(closed_roll_year) as year, parcel_number  from property group by parc
 and p.parcel_number = sub.parcel_number and 
 cast(p.number_of_stories as tinyint) = 6;
 
+# bad join but runs
+select p.property_location  from address a ,property p  inner join (
+select max(closed_roll_year) as year, parcel_number  from property group by parcel_number) sub on p.closed_roll_year = sub.year
+and p.parcel_number = sub.parcel_number 
+and p.lot = a.lot 
+and p.block = a.block 
+and p.parcel_number = a.parcel_number and 
+cast(p.number_of_stories as tinyint) = 6;
+
+# try to fix inner join
+select property_location  from property p  inner join (
+select max(closed_roll_year) as year, parcel_number  from property group by parcel_number) sub on p.closed_roll_year = sub.year
+and p.parcel_number = sub.parcel_number 
+where
+cast(p.number_of_stories as tinyint) = 6;
+
+# 
+select property_location  from address a, property p  inner join (
+select max(closed_roll_year) as year, parcel_number  from property group by parcel_number) sub on p.closed_roll_year = sub.year
+and p.parcel_number = sub.parcel_number 
+where
+p.lot = a.lot 
+and p.block = a.block 
+and p.parcel_number = a.parcel_number and 
+cast(p.number_of_stories as tinyint) = 6;
+
+# impala cant do this
+select property_location  from property p  where (p.parcel_number, p.closed_roll_year) in (
+select max(closed_roll_year) as year, parcel_number  from property group by parcel_number where p.closed_roll_year = sub.year
+and p.parcel_number = sub.parcel_number );
+
+select property_location  from property p  where p.parcel_number, p.closed_roll_year in (
+select max(closed_roll_year) as year, parcel_number  from property group by parcel_number where p.closed_roll_year = sub.year
+and p.parcel_number = sub.parcel_number );
 
 
+# use 2 tables
+create table property6 as 
+select property_location, lot, p.parcel_number, block  from 
+property p  
+inner join ( select max(closed_roll_year) as year, parcel_number  from property group by parcel_number) sub 
+on p.closed_roll_year = sub.year and 
+p.parcel_number = sub.parcel_number and
+cast(p.number_of_stories as tinyint) = 6
+
+
+select * from property6 p, address a where
+p.lot = a.lot 
+and p.block = a.block
+and p.parcel_number = a.parcel_number;
 
 
