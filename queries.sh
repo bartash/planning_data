@@ -30,10 +30,10 @@ select property_location,number_of_stories  from property where property_locatio
 
 select max(closed_roll_year), parcel_number  from property group by parcel_number
 
-# start inner join
+# use subselct to eliminabte duplicate rows
 select property_location,number_of_stories  from property p  inner join (
 select max(closed_roll_year) as year, parcel_number  from property group by parcel_number) sub on p.closed_roll_year = sub.year
-and p.parcel_number = sub.parcel_number;
+and p.parcel_number = sub.parcel_number and p.property_location like '%302 SILVER%';
 
 
 
