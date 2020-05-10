@@ -1,4 +1,4 @@
-OUT=$1.out
+OUT=$1.csv
 SQL=$1.sql
 TMP=$1.raw
 impala-shell.sh  -B < $SQL -o $TMP
