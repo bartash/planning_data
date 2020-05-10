@@ -11,7 +11,7 @@ select property_location,number_of_stories  from property where cast(number_of_s
 
 select count(property_location),assessor_neighborhood from property 
 where cast(number_of_stories as tinyint) = 7 
-group by assessor_neighborhood; 
+group by assessor_neighborhood order by count(property_location) desc; 
 
 
 # 555 California
