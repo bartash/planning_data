@@ -28,6 +28,10 @@ select property_location,number_of_stories  from property where cast(parcel_numb
 # 302 silver
 select property_location,number_of_stories  from property where property_location like '%302 SILVER%';
 
+# 1250 ocean just is not there properly
+select closed_roll_year, property_location,number_of_stories  from property where property_location like '%1150 OCEAN%';
+select closed_roll_year, property_location,number_of_stories  from property where property_location like '%1250 OCEAN%';
+
 select max(closed_roll_year), parcel_number  from property group by parcel_number
 
 # use subselct to eliminabte duplicate rows
