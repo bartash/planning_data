@@ -35,6 +35,13 @@ select property_location,number_of_stories  from property p  inner join (
 select max(closed_roll_year) as year, parcel_number  from property group by parcel_number) sub on p.closed_roll_year = sub.year
 and p.parcel_number = sub.parcel_number and p.property_location like '%302 SILVER%';
 
+select count(property_location), assessor_neighborhood  from property p  inner join (
+select max(closed_roll_year) as year, parcel_number  from property group by parcel_number) sub on p.closed_roll_year = sub.year
+and p.parcel_number = sub.parcel_number and 
+cast(p.number_of_stories as tinyint) = 6 
+group by assessor_neighborhood order by count(property_location) desc;
+
+
 
 
 
