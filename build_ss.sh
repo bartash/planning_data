@@ -1,3 +1,7 @@
 # buid the csv files
-impala-shell.sh  -B < 6_stories.sql -o 6_stories.raw
-cat 6_stories.raw | cut -c 6- | cut -c -25 | sed 's/$/,San Francisco/' 
+OUT=6_stories.csv
+TMP=6_stories.raw
+impala-shell.sh  -B < 6_stories.sql -o $TMP
+echo "Address,City" > $OUT
+cat $TMP | cut -c 6- | cut -c -25 | sed 's/$/,San Francisco/' >> $OUT
+
