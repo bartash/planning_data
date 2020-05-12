@@ -121,3 +121,16 @@ and p.block = a.block
 and p.parcel_number = a.parcel_number;
 
 
+
+# 11000 ocena hacking
+
+# gets 2
+select closed_roll_year, property_location,number_of_stories  from property where property_location like '%1100 OCEAN%'
+
+# gets 0
+select property_location  from property p  inner join (
+select max(closed_roll_year) as year, parcel_number  from property group by parcel_number) sub on p.closed_roll_year = sub.year
+and p.property_location like '%1100 OCEAN%' and
+cast(p.number_of_stories as tinyint) >= 4 and
+cast(p.number_of_stories as tinyint) <= 5;
+
